@@ -8,6 +8,7 @@ jobs:
       - checkout
       - run: make install
       - run: make test
+      - run: bash <(curl -s https://codecov.io/bash)
 
 workflows:
   version: 2
