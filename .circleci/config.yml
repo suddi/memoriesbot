@@ -1,0 +1,20 @@
+version: 2
+
+jobs:
+  go:
+    docker:
+      - image: circleci/golang:1.14
+    steps:
+      - checkout
+      - run: make install
+      - run: make test
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - go
+
+notify:
+  webhooks:
+    - url: https://bot.suddi.io/hooks/circle
