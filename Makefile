@@ -3,7 +3,9 @@ BUILD_PATH := build
 GOPATH := $(shell go env GOPATH)
 BIN_NAME := memoriesbot
 
-build: .
+.PHONY : build zip test coverage builddir install clean
+
+build:
 	GOOS=linux GOARCH=amd64 go build -o $(BUILD_PATH)/$(BIN_NAME) ./cmd
 
 zip:
