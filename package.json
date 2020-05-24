@@ -31,7 +31,7 @@
     "npm": ">= 6.0.0"
   },
   "scripts": {
-      "start": "sam local start-api"
+    "start": "sam local start-api"
   },
   "dependencies": {},
   "devDependencies": {
