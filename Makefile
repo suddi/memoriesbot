@@ -4,10 +4,10 @@ GOPATH := $(shell go env GOPATH)
 BIN_NAME := memoriesbot
 
 build: .
-	GOOS=linux GOARCH=amd64 go build -o $(BUILD_PATH)/$(BIN_NAME) ./cmd
+	GOOS=linux GOARCH=amd64 go build -o $(BUILD_PATH)/main ./cmd
 
 zip:
-	zip -j $(BUILD_PATH)/$(BIN_NAME).zip $(BUILD_PATH)/$(BIN_NAME)
+	zip -j $(BUILD_PATH)/$(BIN_NAME).zip $(BUILD_PATH)/main
 
 test:
 	go test ./... -coverprofile=coverage.out
