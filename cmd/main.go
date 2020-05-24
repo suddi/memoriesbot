@@ -10,7 +10,7 @@ import (
 )
 
 func routeRequests(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	route := fmt.Sprintf("%s %s", req.HTTPMethod, req.Path)
+	route := fmt.Sprintf("%s %s", req.HTTPMethod, req.Resource)
 
 	fmt.Println(route)
 
