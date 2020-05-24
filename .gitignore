@@ -28,3 +28,7 @@ build/
 coverage.out
 *.txt
 *.ini
+
+.DS_Store
+pkg/google
+pkg/telegram
