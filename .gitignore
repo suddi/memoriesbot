@@ -32,3 +32,4 @@ coverage.out
 .DS_Store
 pkg/google
 pkg/telegram
+node_modules

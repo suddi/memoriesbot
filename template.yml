@@ -1,0 +1,33 @@
+---
+AWSTemplateFormatVersion : "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: MemoriesBot SAM testing template
+
+Resources:
+# ------------------------------------------------------------------------------
+# LAMBDA FUNCTIONS
+# ------------------------------------------------------------------------------
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build/main
+      Runtime: go1.x
+      Events:
+        Whoami:
+          Type: Api
+          Properties:
+            Method: get
+            Path: /
+
+        HealthCheck:
+          Type: Api
+          Properties:
+            Method: get
+            Path: /v1/status
+
+        UnknownEndpoint:
+          Type: Api
+          Properties:
+            Method: post
+            Path: /unknown
+
