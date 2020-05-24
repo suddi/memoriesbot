@@ -23,6 +23,7 @@ func TestRouteRequestsWhoami(t *testing.T) {
 	req := events.APIGatewayProxyRequest{
 		HTTPMethod: "GET",
 		Path:       "/",
+		Resource:   "/",
 	}
 
 	result, _ := routeRequests(req)
@@ -59,6 +60,7 @@ func TestRouteRequestsHealthCheck(t *testing.T) {
 	req := events.APIGatewayProxyRequest{
 		HTTPMethod: "GET",
 		Path:       "/v1/status",
+		Resource:   "/v1/status",
 	}
 
 	result, _ := routeRequests(req)
@@ -92,6 +94,7 @@ func TestRouteRequestsUnknown(t *testing.T) {
 	whoami := events.APIGatewayProxyRequest{
 		HTTPMethod: "GET",
 		Path:       "/unknown",
+		Resource:   "/unknown",
 	}
 
 	result, _ := routeRequests(whoami)
