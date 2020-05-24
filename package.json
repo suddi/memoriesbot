@@ -35,6 +35,12 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "aws-sam-local": "^0.2.11"
+    "aws-sam-local": "^0.2.11",
+    "husky": "^4.2.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "make test"
+    }
   }
 }
