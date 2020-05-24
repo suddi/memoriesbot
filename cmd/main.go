@@ -12,6 +12,8 @@ import (
 func routeRequests(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	route := fmt.Sprintf("%s %s", req.HTTPMethod, req.Path)
 
+	fmt.Printf(route)
+
 	switch route {
 	case "GET /":
 		return base.ServeWhoami(req)
