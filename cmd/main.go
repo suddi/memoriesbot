@@ -12,7 +12,7 @@ import (
 func routeRequests(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	route := fmt.Sprintf("%s %s", req.HTTPMethod, req.Resource)
 
-	fmt.Println(route)
+	fmt.Printf("req.HTTPMethod req.Resource: %s", route)
 
 	switch route {
 	case "GET /":
