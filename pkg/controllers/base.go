@@ -1,9 +1,10 @@
-package base
+package controllers
 
 import (
-	"log"
+	"fmt"
 	"memoriesbot/pkg/config"
 	"memoriesbot/pkg/lambda"
+	"memoriesbot/pkg/logger"
 	"memoriesbot/pkg/status"
 	"os"
 
@@ -21,16 +22,14 @@ type healthCheck struct {
 
 type empty struct{}
 
-var logger = log.New(os.Stderr, "ERROR [memoriesbot/pkg/controllers/base]: ", log.Llongfile)
-
 var whoamiResponse []whoami = []whoami{}
 
 func init() {
 	botName := "knightwatcherbot"
 	response, err := GetLambdaWhoami(botName)
 	if err != nil {
-		logger.Println(err)
-		logger.Fatalf("Could not retrieve app details for %s", botName)
+		logger.LogError(err)
+		logger.LogError(fmt.Sprintf("Could not retrieve app details for %s", botName))
 		os.Exit(1)
 	}
 

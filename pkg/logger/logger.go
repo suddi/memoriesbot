@@ -1,27 +1,20 @@
 package logger
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"memoriesbot/pkg/config"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 )
 
-// Debug - debug log level
-var Debug *log.Logger = log.New(os.Stdout, "", log.Llongfile)
+// InfoLogger - to log out info to Cloudwatch Logs
+var infoLogger *log.Logger = log.New(os.Stdout, "", 0)
 
-// Info - info log level
-var Info *log.Logger = log.New(os.Stdout, "", log.Llongfile)
-
-// Warn - warn log level
-var Warn *log.Logger = log.New(os.Stdout, "", log.Llongfile)
-
-// Error - error log level
-var Error *log.Logger = log.New(os.Stderr, "", log.Llongfile)
-
-// Fatal - fatal log level
-var Fatal *log.Logger = log.New(os.Stderr, "", log.Llongfile)
+// ErrorLogger - to log out errors to Cloudwatch Logs
+var errorLogger *log.Logger = log.New(os.Stdout, "", 0)
 
 type accessLog struct {
 	Method   string `json:"method"`
@@ -34,15 +27,39 @@ type RoutingFunction func(events.APIGatewayProxyRequest) (events.APIGatewayProxy
 
 // AccessLog - access logger that wraps a routing function
 func AccessLog(fn RoutingFunction) RoutingFunction {
+	c := config.Get()
+
 	return func(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 		response, err := fn(req)
 
-		Info.Println(&accessLog{
+		infoLogger.SetPrefix(fmt.Sprintf("EXECUTING\tRequestId: %s\tVersion: %s\tINFO\t", req.RequestContext.RequestID, c.Aws.LambdaVersion))
+		errorLogger.SetPrefix(fmt.Sprintf("EXECUTING\tRequestId: %s\tVersion: %s\tERROR\t", req.RequestContext.RequestID, c.Aws.LambdaVersion))
+
+		routeKey := fmt.Sprintf("%s %s", req.HTTPMethod, req.Resource)
+		logJSON, err := json.Marshal(accessLog{
 			Method:   req.HTTPMethod,
 			Path:     req.Resource,
-			RouteKey: fmt.Sprintf("%v %v", req.HTTPMethod, req.Resource),
+			RouteKey: routeKey,
 		})
+
+		if err != nil {
+			errorMessage := fmt.Sprintf("RequestId: %s\tVersion: %s\tERROR\tFailed to marshal JSON for routeKey = %s", req.RequestContext.RequestID, c.Aws.LambdaVersion, routeKey)
+			errorLogger.Println(errorMessage)
+			return response, err
+		}
+
+		message := fmt.Sprintf("RequestId: %s\tVersion: %s\tINFO\t%s", req.RequestContext.RequestID, c.Aws.LambdaVersion, logJSON)
+		infoLogger.Println(message)
 		return response, err
 	}
+}
 
+// Log - used to log messages to stdout
+func Log(message string) {
+	infoLogger.Println(message)
+}
+
+// LogError - used to log errors to stderr
+func LogError(errorMessage interface{}) {
+	errorLogger.Println(errorMessage)
 }

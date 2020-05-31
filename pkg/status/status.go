@@ -58,6 +58,14 @@ var NoContent Meta = Meta{
 	Retryable: true,
 }
 
+// MovedPermanently - use status.MovedPermanently for 301 MOVED PERMANENTLY response
+var MovedPermanently Meta = Meta{
+	Code:      301,
+	Message:   "Moved Permanently",
+	Details:   make([]string, 0),
+	Retryable: true,
+}
+
 // BadRequest - use status.BadRequest for 400 BAD REQUEST response
 var BadRequest Meta = Meta{
 	Code:      400,
@@ -187,6 +195,16 @@ func SendError(status Meta, body interface{}) (events.APIGatewayProxyResponse, e
 	return events.APIGatewayProxyResponse{
 		StatusCode: status.Code,
 		Body:       string(obj),
+	}, nil
+}
+
+// SendRedirect - send redirect to specified URL
+func SendRedirect(url string) (events.APIGatewayProxyResponse, error) {
+	return events.APIGatewayProxyResponse{
+		StatusCode: MovedPermanently.Code,
+		Headers: map[string]string{
+			"Location": url,
+		},
 	}, nil
 }
 

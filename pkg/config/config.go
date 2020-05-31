@@ -13,13 +13,15 @@ type AuthConfig struct {
 
 // AwsConfig - structure of AWS configuration
 type AwsConfig struct {
-	Region string
+	Region        string
+	LambdaVersion string
 }
 
 // GooglePhotosAuthConfig - structure of Google Photos auth configuration
 type GooglePhotosAuthConfig struct {
 	ClientID     string
 	ClientSecret string
+	RedirectURL  string
 }
 
 // Config - structure of configuration
@@ -40,10 +42,12 @@ func Get() *Config {
 			GooglePhotos: GooglePhotosAuthConfig{
 				ClientID:     getEnv("CLIENT_ID", ""),
 				ClientSecret: getEnv("CLIENT_SECRET", ""),
+				RedirectURL:  getEnv("REDIRECT_URL", ""),
 			},
 		},
 		Aws: AwsConfig{
-			Region: getEnv("AWS_REGION", "ap-northeast-1"),
+			Region:        getEnv("AWS_REGION", "ap-northeast-1"),
+			LambdaVersion: getEnv("AWS_LAMBDA_FUNCTION_VERSION", ""),
 		},
 	}
 }
