@@ -29,6 +29,7 @@ func init() {
 	botName := "knightwatcherbot"
 	response, err := GetLambdaWhoami(botName)
 	if err != nil {
+		logger.Println(err)
 		logger.Fatalf("Could not retrieve app details for %s", botName)
 		os.Exit(1)
 	}
