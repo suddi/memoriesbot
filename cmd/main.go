@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	base "memoriesbot/pkg/controllers"
+	"memoriesbot/pkg/logger"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -14,13 +15,13 @@ func routeRequests(req events.APIGatewayProxyRequest) (events.APIGatewayProxyRes
 
 	switch route {
 	case "GET /":
-		return base.ServeWhoami(req)
+		return logger.AccessLog(base.ServeWhoami)(req)
 	case "GET /v1/status":
-		return base.ServeHealthCheck(req)
+		return logger.AccessLog(base.ServeHealthCheck)(req)
 	// case "GET /v1/memories":
-	// 	return serveMemories()
+	// 	return logger.AccessLog(serveMemories)(req)
 	default:
-		return base.HandleUnknownEndpoint(req)
+		return logger.AccessLog(base.HandleUnknownEndpoint)(req)
 	}
 }
 
