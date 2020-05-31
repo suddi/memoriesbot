@@ -14,7 +14,7 @@ import (
 var infoLogger *log.Logger = log.New(os.Stdout, "", 0)
 
 // ErrorLogger - to log out errors to Cloudwatch Logs
-var errorLogger *log.Logger = log.New(os.Stdout, "", 0)
+var errorLogger *log.Logger = log.New(os.Stderr, "", 0)
 
 type accessLog struct {
 	Method   string `json:"method"`
@@ -43,12 +43,12 @@ func AccessLog(fn RoutingFunction) RoutingFunction {
 		})
 
 		if err != nil {
-			errorMessage := fmt.Sprintf("RequestId: %s\tVersion: %s\tERROR\tFailed to marshal JSON for routeKey = %s", req.RequestContext.RequestID, c.Aws.LambdaVersion, routeKey)
+			errorMessage := fmt.Sprintf("Failed to marshal JSON for routeKey = %s", routeKey)
 			errorLogger.Println(errorMessage)
 			return response, err
 		}
 
-		message := fmt.Sprintf("RequestId: %s\tVersion: %s\tINFO\t%s", req.RequestContext.RequestID, c.Aws.LambdaVersion, logJSON)
+		message := fmt.Sprintf("%s", logJSON)
 		infoLogger.Println(message)
 		return response, err
 	}
