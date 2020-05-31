@@ -40,7 +40,7 @@ func AccessLog(fn RoutingFunction) RoutingFunction {
 		Info.Println(&accessLog{
 			Method:   req.HTTPMethod,
 			Path:     req.Resource,
-			RouteKey: fmt.Sprintf("%s %s", req.HTTPMethod, req.Resource),
+			RouteKey: fmt.Sprintf("%v %v", req.HTTPMethod, req.Resource),
 		})
 		return response, err
 	}
