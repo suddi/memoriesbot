@@ -3,6 +3,7 @@ package base
 import (
 	"encoding/json"
 	"memoriesbot/pkg/status"
+	"reflect"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -16,7 +17,7 @@ func TestServeWhoami(t *testing.T) {
 
 	type response struct {
 		Meta status.Meta `json:"meta"`
-		Data data        `json:"data"`
+		Data []data      `json:"data"`
 	}
 
 	result, _ := ServeWhoami(events.APIGatewayProxyRequest{})
@@ -34,8 +35,10 @@ func TestServeWhoami(t *testing.T) {
 		res.Meta.Code != status.Ok.Code ||
 		res.Meta.Message != status.Ok.Message ||
 		res.Meta.Retryable != status.Ok.Retryable ||
-		res.Data.Name == "" ||
-		res.Data.Version == "" {
+		reflect.TypeOf(res.Data[0].Name).Kind() != reflect.String ||
+		reflect.TypeOf(res.Data[0].Version).Kind() != reflect.String ||
+		reflect.TypeOf(res.Data[1].Name).Kind() != reflect.String ||
+		reflect.TypeOf(res.Data[1].Version).Kind() != reflect.String {
 		t.Error(errorMessage)
 	}
 }

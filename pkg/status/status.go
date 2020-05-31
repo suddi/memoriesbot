@@ -21,8 +21,14 @@ type Pagination struct {
 	NextPage string `json:"nextPage,omitempty"`
 }
 
-// Response - complete response struct with "meta", "data" and "pagination"
+// Response - response struct with "meta" and "data"
 type Response struct {
+	Meta Meta        `json:"meta"`
+	Data interface{} `json:"data"`
+}
+
+// ListResponse - complete response struct with "meta", "data" and "pagination"
+type ListResponse struct {
 	Meta       Meta        `json:"meta"`
 	Data       interface{} `json:"data"`
 	Pagination *Pagination `json:"pagination,omitempty"`

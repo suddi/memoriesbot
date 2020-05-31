@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"memoriesbot/pkg/status"
+	"reflect"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -17,7 +18,7 @@ func TestRouteRequestsWhoami(t *testing.T) {
 
 	type response struct {
 		Meta status.Meta `json:"meta"`
-		Data data        `json:"data"`
+		Data []data      `json:"data"`
 	}
 
 	req := events.APIGatewayProxyRequest{
@@ -41,8 +42,10 @@ func TestRouteRequestsWhoami(t *testing.T) {
 		res.Meta.Code != status.Ok.Code ||
 		res.Meta.Message != status.Ok.Message ||
 		res.Meta.Retryable != status.Ok.Retryable ||
-		res.Data.Name == "" ||
-		res.Data.Version == "" {
+		reflect.TypeOf(res.Data[0].Name).Kind() != reflect.String ||
+		reflect.TypeOf(res.Data[0].Version).Kind() != reflect.String ||
+		reflect.TypeOf(res.Data[1].Name).Kind() != reflect.String ||
+		reflect.TypeOf(res.Data[1].Version).Kind() != reflect.String {
 		t.Error(errorMessage)
 	}
 }
