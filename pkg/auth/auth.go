@@ -39,7 +39,7 @@ func GenerateID() (string, error) {
 // RequestToken - to request a token
 func RequestToken(state string) string {
 
-	url := conf.AuthCodeURL(state)
+	url := conf.AuthCodeURL(state, oauth2.AccessTypeOffline)
 	return url
 }
 

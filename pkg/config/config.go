@@ -25,11 +25,17 @@ type GooglePhotosAuthConfig struct {
 	AccessToken  string
 }
 
+// StoreConfig - structure of S3 bucket store config
+type StoreConfig struct {
+	S3Bucket string
+}
+
 // Config - structure of configuration
 type Config struct {
-	App  AppConfig
-	Auth AuthConfig
-	Aws  AwsConfig
+	App   AppConfig
+	Auth  AuthConfig
+	Aws   AwsConfig
+	Store StoreConfig
 }
 
 // Get - get config from passed environment variables
@@ -50,6 +56,9 @@ func Get() *Config {
 		Aws: AwsConfig{
 			Region:        getEnv("AWS_REGION", "ap-northeast-1"),
 			LambdaVersion: getEnv("AWS_LAMBDA_FUNCTION_VERSION", ""),
+		},
+		Store: StoreConfig{
+			S3Bucket: getEnv("S3_BUCKET", ""),
 		},
 	}
 }

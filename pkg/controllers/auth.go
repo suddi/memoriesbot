@@ -50,6 +50,7 @@ func ServeExchangeAuthCode(req events.APIGatewayProxyRequest) (events.APIGateway
 		}
 
 		logger.Log(fmt.Sprintf("%+v", token))
+
 		return status.SendResponse(status.Ok, empty{})
 	}
 	return status.SendResponse(status.Ok, empty{})
