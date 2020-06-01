@@ -22,6 +22,7 @@ type GooglePhotosAuthConfig struct {
 	ClientID     string
 	ClientSecret string
 	RedirectURL  string
+	AccessToken  string
 }
 
 // Config - structure of configuration
@@ -43,6 +44,7 @@ func Get() *Config {
 				ClientID:     getEnv("CLIENT_ID", ""),
 				ClientSecret: getEnv("CLIENT_SECRET", ""),
 				RedirectURL:  getEnv("REDIRECT_URL", ""),
+				AccessToken:  getEnv("ACCESS_TOKEN", ""),
 			},
 		},
 		Aws: AwsConfig{

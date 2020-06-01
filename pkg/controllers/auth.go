@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"memoriesbot/pkg/auth"
 	"memoriesbot/pkg/logger"
 	"memoriesbot/pkg/status"
@@ -40,7 +41,7 @@ func ServeExchangeAuthCode(req events.APIGatewayProxyRequest) (events.APIGateway
 			return status.SendResponse(status.Ok, nil)
 		}
 
-		logger.Log(token.AccessToken)
+		logger.Log(fmt.Sprintf("%+v", token))
 		return status.SendResponse(status.Ok, nil)
 	}
 	return status.SendResponse(status.Ok, nil)
